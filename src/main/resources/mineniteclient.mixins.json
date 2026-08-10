@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "net.minenite.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "mineniteclient.refmap.json",
+  "client": [
+    "ClientNetworkRegistryMixin",
+    "DataComponentInitializersMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

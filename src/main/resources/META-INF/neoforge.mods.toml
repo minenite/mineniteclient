@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[11,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/icedmoca/mineniteclient/issues"
+
+[[mods]]
+modId = "mineniteclient"
+version = "${version}"
+displayName = "MineniteClient"
+authors = "icedmoca"
+description = '''
+Lets a modded client join servers that do not load all of its mods.
+
+A client's items carry references into datapack registries - trim materials,
+jukebox songs and the like. Those are resolved against whatever the server
+sends, and a server without the mod never sends them, so the lookup throws
+during registry sync and the connection drops before the world loads.
+
+This skips the individual component that cannot be resolved rather than failing
+the whole sync. The item keeps existing; it just loses the part that depended on
+data this server does not have, which is correct, because the mod providing it
+is not loaded there either.
+
+Client side only. It changes nothing about how a server behaves, and a server
+running it is unaffected.
+'''
+
+# Client-side only: a server without this mod is a normal server, and this must
+# never stop a player joining one.
+[[mixins]]
+config = "mineniteclient.mixins.json"
+
+[[dependencies.mineniteclient]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.2,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.mineniteclient]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.2,26.3)"
+ordering = "NONE"
+side = "CLIENT"
