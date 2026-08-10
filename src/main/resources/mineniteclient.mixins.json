@@ -6,7 +6,8 @@
   "refmap": "mineniteclient.refmap.json",
   "client": [
     "ClientNetworkRegistryMixin",
-    "DataComponentInitializersMixin"
+    "DataComponentInitializersMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
