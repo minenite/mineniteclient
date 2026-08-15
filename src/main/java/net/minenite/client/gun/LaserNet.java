@@ -61,6 +61,9 @@ public final class LaserNet {
 		reg.playToServer(BytesPayload.typeOf(PRONE_REQ_ID), BytesPayload.codec(PRONE_REQ_ID), (p, ctx) -> {});
 		reg.playToServer(BytesPayload.typeOf(PEQ_REQ_ID), BytesPayload.codec(PEQ_REQ_ID), (p, ctx) -> {});
 		for (String path : new String[]{
+				// glass stays in this list: the entry is what registers the
+				// channel so NeoForge will decode it at all. The payload itself
+				// is handled in dispatch(), not by the no-op below.
 				"features", "blast", "chainlink", "workbench",
 				"glass", "weather", "flare", "smoke", "anomaly_vis",
 				"drone_strike_fx", "drone_optic", "drone_zoom", "drone_adjust",
@@ -104,6 +107,7 @@ public final class LaserNet {
 				case "gun_pose" -> onGunPose(new BytesPayload(GUN_POSE_ID, raw), null);
 				case "features" -> WarzFeatures.accept(raw);
 				case "chainlink" -> ChainlinkClient.accept(raw);
+				case "glass" -> GlassCrackStore.accept(raw);
 				default -> {
 				}
 			}
@@ -137,6 +141,10 @@ public final class LaserNet {
 			GunPoseClient.reset();
 			GunReloadAnimator.reset();
 			ChainlinkClient.clear();
+			// Marks are per world and per server; keeping them across a
+			// disconnect would draw cracks on whatever glass happened to sit at
+			// the same coordinates next time.
+			GlassCrackStore.clear();
 			WarzFeatures.clear();
 			return;
 		}

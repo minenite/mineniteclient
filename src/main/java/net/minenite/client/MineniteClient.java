@@ -18,6 +18,7 @@ public class MineniteClient {
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(LaserNet.class);
         NeoForge.EVENT_BUS.register(net.minenite.client.gun.LaserBeamRenderer.class);
+        NeoForge.EVENT_BUS.register(net.minenite.client.gun.GlassCrackRenderer.class);
     }
 
     @SubscribeEvent
