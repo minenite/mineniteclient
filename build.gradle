@@ -42,3 +42,31 @@ processResources {
         expand version: project.version
     }
 }
+
+// Ship the WarZ item art inside the mod.
+//
+// The old server did this: its client mod carried the models and textures, so
+// every player had them the moment they connected. This mod carries none, so
+// the same art now depends on each player having manually installed
+// MineniteWARZ.zip - and anyone without it sees bricks, sticks and raw flint
+// where the guns, gear and ammo should be.
+//
+// Mod resources sit below resource packs in the stack, so a player who *has*
+// the zip still gets the zip's copy; this is the floor, not an override.
+def warzPack = file("${rootDir}/../MineniteWARZ")
+
+tasks.register('syncPackAssets', Copy) {
+    description = 'Copy the WarZ pack art into the mod jar resources'
+    group = 'build'
+    onlyIf { warzPack.exists() }
+    from(warzPack) {
+        include 'assets/minecraft/items/**'
+        include 'assets/minecraft/models/item/**'
+        include 'assets/minecraft/textures/item/**'
+        include 'assets/minecraft/textures/misc/**'
+        include 'assets/pvpgunminus/**'
+    }
+    into layout.buildDirectory.dir('packAssets')
+}
+
+sourceSets.main.resources.srcDir(tasks.named('syncPackAssets').map { it.destinationDir })
