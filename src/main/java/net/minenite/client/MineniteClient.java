@@ -15,6 +15,9 @@ public class MineniteClient {
     public MineniteClient(IEventBus modBus) {
         GunBackSlingConfig.INSTANCE.load();
         modBus.addListener(LaserNet::register);
+        // The crack pipeline has to be registered on the mod bus, and it must
+        // exist before the first frame that draws a cracked pane.
+        modBus.addListener(net.minenite.client.gun.GlassCrackQuads::onRegisterPipelines);
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(LaserNet.class);
         NeoForge.EVENT_BUS.register(net.minenite.client.gun.LaserBeamRenderer.class);
