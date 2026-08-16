@@ -108,6 +108,16 @@ public final class LaserNet {
 				case "features" -> WarzFeatures.accept(raw);
 				case "chainlink" -> ChainlinkClient.accept(raw);
 				case "glass" -> GlassCrackStore.accept(raw);
+				case "smoke" -> net.minenite.client.gun.warz.WarzFxStores.acceptSmoke(raw);
+				case "flare" -> net.minenite.client.gun.warz.WarzFxStores.acceptFlare(raw);
+				case "anomaly_vis" -> net.minenite.client.gun.warz.WarzFxStores.acceptAnomaly(raw);
+				case "blast" -> net.minenite.client.gun.warz.WarzFxStores.acceptBlast(raw);
+				case "javelin_lock" -> net.minenite.client.gun.warz.WarzFxStores.acceptJavelin(raw);
+				case "weather" -> net.minenite.client.gun.warz.WarzFxStores.acceptWeather(raw);
+				case "workbench" -> net.minenite.client.gun.warz.WarzFxStores.acceptWorkbench(raw);
+				// The server materialises the real item itself; the client is told
+				// so the screen it came from refreshes.
+				case "creative_give" -> net.minenite.client.gun.warz.CreativeGiveClient.accept(raw);
 				default -> {
 				}
 			}
@@ -121,6 +131,7 @@ public final class LaserNet {
 		Minecraft mc = Minecraft.getInstance();
 		LaserBeamStore.get().tick();
 		FxStore.get().tick();
+		net.minenite.client.gun.warz.WarzWorldFx.tick();
 		ScopeOverlay.tick();
 		BloodOverlay.tick();
 		LaserEyeFlash.tick();
@@ -145,6 +156,7 @@ public final class LaserNet {
 			// disconnect would draw cracks on whatever glass happened to sit at
 			// the same coordinates next time.
 			GlassCrackStore.clear();
+			net.minenite.client.gun.warz.WarzFxStores.clearAll();
 			WarzFeatures.clear();
 			return;
 		}
@@ -233,6 +245,8 @@ public final class LaserNet {
 		NvgOverlay.render(event.getGuiGraphics());
 		BloodOverlay.render(event.getGuiGraphics());
 		ScopeOverlay.render(event.getGuiGraphics());
+		net.minenite.client.gun.warz.BlastShock.render(event.getGuiGraphics());
+		net.minenite.client.gun.warz.JavelinLockHud.render(event.getGuiGraphics());
 		ProneClient.render(event.getGuiGraphics());
 		LaserEyeFlash.render(event.getGuiGraphics());
 	}
